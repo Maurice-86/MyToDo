@@ -1,14 +1,7 @@
 ﻿using MyToDo.Services.Core;
 using MyToDo.Services.Interfaces;
 using MyToDo.Shared.Dtos;
-using MyToDo.Shared.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyToDo.Services.Implementations
 {
@@ -24,23 +17,23 @@ namespace MyToDo.Services.Implementations
             return response.Message;
         }
 
-        public async Task<string?> DeleteDtoAsync(string action, int id, ObservableCollection<TDto> dtos)
+        public async Task<string?> DeleteDtoAsync(string action, int uid, int id, ObservableCollection<TDto> dtos)
         {
-            var response = await HttpClientService.TryDeleteAsync(action, id);
+            var response = await HttpClientService.TryDeleteAsync(action, uid, id);
             if (response == null || !response.Status)
                 return response?.Message;
 
             var idx = dtos.Select((x, i) => new { x, i })
-                .FirstOrDefault(g => g.x.Id.Equals(id))?.i;
+                .FirstOrDefault(g => g.x.Uid.Equals(uid) && g.x.Id.Equals(id))?.i;
             if (idx != null)
                 dtos.RemoveAt(idx.Value);
 
             return response.Message;
         }
 
-        public async Task<string?> GetDtosAsync(string action, ObservableCollection<TDto> dtos)
+        public async Task<string?> GetDtosAsync(string action, int uid, ObservableCollection<TDto> dtos)
         {
-            var response = await HttpClientService.TryGetAsync<ICollection<TDto>>(action);
+            var response = await HttpClientService.TryGetAsync<ICollection<TDto>>(action, uid);
             if (response == null || !response.Status)
                 return response?.Message;
 
@@ -49,7 +42,6 @@ namespace MyToDo.Services.Implementations
                 dtos.Add(dto);
 
             return response.Message;
-
         }
 
         public async Task<string?> UpdateDtoAsync(string action, TDto dto, ObservableCollection<TDto> dtos)
@@ -60,7 +52,7 @@ namespace MyToDo.Services.Implementations
 
             var updatedDto = response.Result!;
             var idx = dtos.Select((x, i) => new { x, i })
-                .FirstOrDefault(g => g.x.Id.Equals(updatedDto.Id))?.i;
+                .FirstOrDefault(g => g.x.Uid.Equals(updatedDto.Uid) && g.x.Id.Equals(updatedDto.Id))?.i;
             if (idx != null)
                 dtos[idx.Value] = updatedDto;
 

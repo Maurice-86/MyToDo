@@ -1,13 +1,7 @@
 ﻿using MyToDo.Shared.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MyToDo.Services.Core
 {
@@ -23,11 +17,11 @@ namespace MyToDo.Services.Core
             PropertyNameCaseInsensitive = true  // 忽略属性名称大小写差异
         };
 
-        public static async Task<ApiResponse?> TryGetAsync(string action)
+        public static async Task<ApiResponse?> TryGetAsync(string action, int uid)
         {
             try
             {
-                var response = await client.GetAsync(action);
+                var response = await client.GetAsync($"{action}?uid={uid}");
                 response.EnsureSuccessStatusCode(); // 这会在状态码不是成功的范围内时抛出异常
 
                 var content = await response.Content.ReadAsStringAsync();
@@ -39,11 +33,14 @@ namespace MyToDo.Services.Core
             }
         }
 
-        public static async Task<ApiResponse<T>?> TryGetAsync<T>(string action)
+        public static async Task<ApiResponse<T>?> TryGetAsync<T>(string action, int uid, string? queryString = null)
         {
             try
             {
-                var response = await client.GetAsync(action);
+                var url = $"{action}?uid={uid}";
+                if (!string.IsNullOrEmpty(queryString))
+                    url += "&" + queryString;
+                var response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode(); // 这会在状态码不是成功的范围内时抛出异常
 
                 var content = await response.Content.ReadAsStringAsync();
@@ -101,11 +98,11 @@ namespace MyToDo.Services.Core
             }
         }
 
-        public static async Task<ApiResponse?> TryDeleteAsync(string action, int id)
+        public static async Task<ApiResponse?> TryDeleteAsync(string action, int uid, int id)
         {
             try
             {
-                var response = await client.DeleteAsync($"{action}?id={id}");
+                var response = await client.DeleteAsync($"{action}?uid={uid}&id={id}");
                 response.EnsureSuccessStatusCode(); // 这会在状态码不是成功的范围内时抛出异常
 
                 var content = await response.Content.ReadAsStringAsync();

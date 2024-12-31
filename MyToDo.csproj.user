@@ -13,7 +13,13 @@
     <Compile Update="Views\Dialogs\AddToDoDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\HomeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\IndexView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\MemoView.xaml.cs">
@@ -28,6 +34,9 @@
     <Compile Update="Views\Settings\SkinView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Settings\UserView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ToDoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -39,7 +48,13 @@
     <Page Update="Views\Dialogs\AddToDoDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\IndexView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LoginView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MainView.xaml">
@@ -55,6 +70,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Settings\SkinView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings\UserView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ToDoView.xaml">

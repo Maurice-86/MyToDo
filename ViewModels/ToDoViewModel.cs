@@ -1,16 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MvvmDialogs;
 using MyToDo.Services.Core;
 using MyToDo.Services.Implementations;
 using MyToDo.Shared.Dtos;
 using MyToDo.Shared.Parameters;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyToDo.ViewModels
 {
@@ -27,7 +21,7 @@ namespace MyToDo.ViewModels
             Task.Run(async () =>
             {
                 await LoadTodosAsync();
-            });
+            }).ConfigureAwait(false);
         }
 
         #region 属性
@@ -110,6 +104,7 @@ namespace MyToDo.ViewModels
                     case 0:
                         resultMessage = await toDoService.AddDtoAsync("api/todo/add", new TodoDto
                         {
+                            Uid = App.Current.Uid,
                             Title = Title,
                             Content = Content,
                             Status = Status
@@ -119,6 +114,7 @@ namespace MyToDo.ViewModels
                         resultMessage = await toDoService.UpdateDtoAsync("api/todo/update", new TodoDto
                         {
                             Id = DtoId,
+                            Uid = App.Current.Uid,
                             Title = Title,
                             Content = Content,
                             Status = Status
@@ -143,7 +139,7 @@ namespace MyToDo.ViewModels
             try
             {
                 uIStateService.IsLoadingVisible = true;
-                resultMessage = await toDoService.DeleteDtoAsync("api/todo/delete", dto.Id, TodoDtos);
+                resultMessage = await toDoService.DeleteDtoAsync("api/todo/delete", App.Current.Uid, dto.Id, TodoDtos);
             }
             finally
             {
@@ -161,14 +157,12 @@ namespace MyToDo.ViewModels
                 uIStateService.IsLoadingVisible = true;
                 if (queryParameter != null)
                 {
-                    await toDoService.GetDtosAsync("api/todo/getallbyqueryparameter", TodoDtos, queryParameter: queryParameter);
+                    await toDoService.GetDtosAsync("api/todo/getallbyqueryparameter", App.Current.Uid, TodoDtos, queryParameter: queryParameter);
                 }
                 else
                 {
-                    await toDoService.GetDtosAsync("api/todo/getall", TodoDtos);
+                    await toDoService.GetDtosAsync("api/todo/getall", App.Current.Uid, TodoDtos);
                 }
-
-
             }
             finally
             {

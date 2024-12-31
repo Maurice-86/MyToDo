@@ -5,18 +5,8 @@ using MyToDo.Common.Models;
 using MyToDo.Services.Core;
 using MyToDo.Services.Implementations;
 using MyToDo.Shared.Dtos;
-using MyToDo.Shared.Models;
 using MyToDo.ViewModels.Dialogs;
-using MyToDo.Views.Dialogs;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyToDo.ViewModels
 {
@@ -43,19 +33,19 @@ namespace MyToDo.ViewModels
                     uIStateService.IsLoadingVisible = true;
                     await LoadTodosAsync();
                     await LoadMemosAsync();
+                    UpdateTaskBarsContent();
                 }
                 finally
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(0.5));
                     uIStateService.IsLoadingVisible = false;
-                    UpdateTaskBarsContent();
                 }
-            });
+
+            }).ConfigureAwait(false);
         }
 
         #region 属性
         [ObservableProperty]
-        private string welcomeMessage = "你好，mo！今天是" + DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("dddd");
+        private string welcomeMessage = $"你好，{App.Current.Username}！今天是" + DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("dddd");
 
         [ObservableProperty]
         private ObservableCollection<TaskBarModel>? taskBars;
@@ -95,6 +85,7 @@ namespace MyToDo.ViewModels
                     uIStateService.IsLoadingVisible = true;
                     resultMessage = await toDoService.AddDtoAsync("api/todo/add", new TodoDto
                     {
+                        Uid = App.Current.Uid,
                         Title = dialogViewModel.Title!,
                         Content = dialogViewModel.Content,
                         Status = dialogViewModel.Status
@@ -128,6 +119,7 @@ namespace MyToDo.ViewModels
                     uIStateService.IsLoadingVisible = true;
                     resultMessage = await memoService.AddDtoAsync("api/memo/add", new MemoDto
                     {
+                        Uid = App.Current.Uid,
                         Title = dialogViewModel.Title!,
                         Content = dialogViewModel.Content,
                     }, MemoDtos);
@@ -164,10 +156,10 @@ namespace MyToDo.ViewModels
         }
 
         private async Task LoadTodosAsync()
-            => await toDoService.GetDtosAsync("api/todo/getall", TodoDtos);
+            => await toDoService.GetDtosAsync("api/todo/getall", App.Current.Uid, TodoDtos);
 
         private async Task LoadMemosAsync()
-            => await memoService.GetDtosAsync("api/memo/getall", MemoDtos);
+            => await memoService.GetDtosAsync("api/memo/getall", App.Current.Uid, MemoDtos);
 
         private void UpdateTaskBarsContent()
         {

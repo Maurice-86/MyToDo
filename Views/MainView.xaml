@@ -11,9 +11,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:MyToDo.ViewModels"
     Title="MyToDo"
-    Width="1150"
-    Height="646"
+    Width="850"
+    Height="460"
+    BorderThickness="0"
     d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+    WindowStartupLocation="CenterScreen"
     Style="{StaticResource MaterialDesignWindow}"
     mc:Ignorable="d">
 
@@ -22,167 +24,16 @@
     </Window.Resources>
 
     <Grid>
-        <materialDesign:DialogHost
-            DialogTheme="Inherit"
-            Identifier="RootDialog"
-            SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-            <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsLeftDrawerOpen}">
-                <materialDesign:DrawerHost.LeftDrawerContent>
-                    <DockPanel MinWidth="220">
-                        <StackPanel>
-                            <Image
-                                Width="110"
-                                Margin="0,16"
-                                Source="/Assets/Images/portrait.jpg">
-                                <Image.Clip>
-                                    <EllipseGeometry
-                                        Center="55,55"
-                                        RadiusX="55"
-                                        RadiusY="55" />
-                                </Image.Clip>
-                            </Image>
-
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="Bold"
-                                Text="Mo" />
-
-                            <ListBox
-                                x:Name="MenuBarListBox"
-                                Margin="0,16,0,0"
-                                ItemsSource="{Binding MenuBars}"
-                                SelectedIndex="0">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged">
-                                        <i:InvokeCommandAction Command="{Binding NavigateToViewCommand}" CommandParameter="{Binding ElementName=MenuBarListBox, Path=SelectedItem}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel MinHeight="30" Orientation="Horizontal">
-                                            <materialDesign:PackIcon
-                                                Margin="8,0,0,0"
-                                                VerticalAlignment="Center"
-                                                Kind="{Binding Icon}" />
-                                            <TextBlock
-                                                Margin="16,0,0,0"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-
-                    </DockPanel>
-                </materialDesign:DrawerHost.LeftDrawerContent>
-
-                <DockPanel>
-                    <materialDesign:ColorZone
-                        x:Name="ColorZone"
-                        MaxHeight="60"
-                        Padding="10"
-                        materialDesign:ElevationAssist.Elevation="Dp4"
-                        DockPanel.Dock="Top"
-                        Mode="PrimaryMid">
-                        <DockPanel LastChildFill="False">
-                            <StackPanel Orientation="Horizontal">
-                                <ToggleButton IsChecked="{Binding IsLeftDrawerOpen}" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
-
-                                <Button
-                                    Margin="24,0,0,0"
-                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                    Command="{Binding MovePrevCommand}"
-                                    Content="{materialDesign:PackIcon Kind=ArrowLeft,
-                                                                      Size=24}"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Style="{StaticResource MaterialDesignToolButton}"
-                                    ToolTip="Previous Item" />
-
-                                <Button
-                                    Margin="16,0,0,0"
-                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                    Command="{Binding MoveNextCommand}"
-                                    Content="{materialDesign:PackIcon Kind=ArrowRight,
-                                                                      Size=24}"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Style="{StaticResource MaterialDesignToolButton}"
-                                    ToolTip="Next Item" />
-
-                                <TextBlock
-                                    Margin="24,0,0,0"
-                                    VerticalAlignment="Center"
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Text="MyToDo" />
-                            </StackPanel>
-
-                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                <Image Width="40" Source="/Assets/Images/portrait.jpg">
-                                    <Image.Clip>
-                                        <EllipseGeometry
-                                            Center="20,20"
-                                            RadiusX="20"
-                                            RadiusY="20" />
-                                    </Image.Clip>
-                                </Image>
-
-                                <Button
-                                    x:Name="MinimizeButton"
-                                    Margin="24,0,0,0"
-                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                    Content="{materialDesign:PackIcon Kind=Minimize,
-                                                                      Size=24}"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Style="{StaticResource MaterialDesignToolButton}"
-                                    ToolTip="Previous Item" />
-
-                                <Button
-                                    x:Name="MaximizeButton"
-                                    Margin="16,0,0,0"
-                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                    Content="{materialDesign:PackIcon Kind=Maximize,
-                                                                      Size=24}"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Style="{StaticResource MaterialDesignToolButton}"
-                                    ToolTip="Previous Item" />
-
-                                <Button
-                                    x:Name="CloseButton"
-                                    Margin="16,0,0,0"
-                                    materialDesign:RippleAssist.Feedback="{Binding RelativeSource={RelativeSource Self}, Path=Foreground, Converter={StaticResource BrushRoundConverter}}"
-                                    Content="{materialDesign:PackIcon Kind=Close,
-                                                                      Size=24}"
-                                    Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type FrameworkElement}}, Path=(TextElement.Foreground)}"
-                                    Style="{StaticResource MaterialDesignToolButton}" />
-                            </StackPanel>
-
-                        </DockPanel>
-                    </materialDesign:ColorZone>
-
-                    <ContentControl Content="{Binding CurrentViewModel}">
-                        <ContentControl.Resources>
-                            <DataTemplate DataType="{x:Type vm:IndexViewModel}">
-                                <local:IndexView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type vm:ToDoViewModel}">
-                                <local:ToDoView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type vm:MemoViewModel}">
-                                <local:MemoView />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-                                <local:SettingsView />
-                            </DataTemplate>
-                        </ContentControl.Resources>
-                    </ContentControl>
-                </DockPanel>
-
-            </materialDesign:DrawerHost>
-
-        </materialDesign:DialogHost>
+        <ContentControl Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                    <local:LoginView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:HomeViewModel}">
+                    <local:HomeView />
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
 
         <!--  灰色遮罩  -->
         <Border

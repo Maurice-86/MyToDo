@@ -1,24 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyToDo.Common.Models;
-using MyToDo.Services.Core;
+using MyToDo.Services.Implementations;
 using MyToDo.ViewModels.Settings;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 
 namespace MyToDo.ViewModels
 {
     public partial class SettingsViewModel : ViewModelBase
     {
-        private NavigationService navigator;
-        public SettingsViewModel()
+        private readonly SettingsNavigationService navigator;
+
+        public SettingsViewModel(SettingsNavigationService navigationService)
         {
-            navigator = new NavigationService();
+            navigator = navigationService;
             CreateMenuBars();
 
             navigator.CurrentViewModelChanged += () =>
@@ -51,9 +46,9 @@ namespace MyToDo.ViewModels
         {
             MenuBars = new ObservableCollection<MenuBarModel> {
                 new MenuBarModel { Icon = "Palette", Name = "个性化" , MyType = typeof(SkinViewModel)},
+                new MenuBarModel { Icon = "Palette", Name = "我的账号" , MyType = typeof(UserViewModel)},
                 new MenuBarModel { Icon = "Information", Name = "关于更多" , MyType = typeof(AboutViewModel)}
             };
         }
-
     }
 }

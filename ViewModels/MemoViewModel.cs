@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyToDo.Services.Core;
 using MyToDo.Services.Implementations;
 using MyToDo.Shared.Dtos;
+using System.Collections.ObjectModel;
 
 namespace MyToDo.ViewModels
 {
@@ -25,7 +20,7 @@ namespace MyToDo.ViewModels
             Task.Run(async () =>
             {
                 await LoadMemosAsync();
-            });
+            }).ConfigureAwait(false);
         }
 
         #region 属性
@@ -74,6 +69,7 @@ namespace MyToDo.ViewModels
                     case 0:
                         resultMessage = await memoService.AddDtoAsync("api/memo/add", new MemoDto
                         {
+                            Uid = App.Current.Uid,
                             Title = Title,
                             Content = Content
                         }, MemoDtos);
@@ -82,6 +78,7 @@ namespace MyToDo.ViewModels
                         resultMessage = await memoService.UpdateDtoAsync("api/memo/update", new MemoDto
                         {
                             Id = DtoId,
+                            Uid = App.Current.Uid,
                             Title = Title,
                             Content = Content
                         }, MemoDtos);
@@ -105,7 +102,7 @@ namespace MyToDo.ViewModels
             try
             {
                 uIStateService.IsLoadingVisible = true;
-                resultMessage = await memoService.DeleteDtoAsync("api/memo/delete", dto.Id, MemoDtos);
+                resultMessage = await memoService.DeleteDtoAsync("api/memo/delete", App.Current.Uid, dto.Id, MemoDtos);
             }
             finally
             {
@@ -121,7 +118,7 @@ namespace MyToDo.ViewModels
             try
             {
                 uIStateService.IsLoadingVisible = true;
-                await memoService.GetDtosAsync("api/memo/getall", MemoDtos);
+                await memoService.GetDtosAsync("api/memo/getall", App.Current.Uid, MemoDtos);
             }
             finally
             {

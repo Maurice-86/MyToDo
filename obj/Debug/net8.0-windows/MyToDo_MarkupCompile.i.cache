@@ -16,5 +16,5 @@ C:\Users\wengym\Desktop\WpfDemo\MyToDo\App.xaml
 210-295701059
 Views\Dialogs\AddMemoDialog.xaml;Views\Dialogs\AddToDoDialog.xaml;Views\HomeView.xaml;Views\IndexView.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\MemoView.xaml;Views\SettingsView.xaml;Views\Settings\AboutView.xaml;Views\Settings\SkinView.xaml;Views\Settings\UserView.xaml;Views\ToDoView.xaml;
 
-True
+False
 
